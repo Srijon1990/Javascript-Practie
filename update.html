@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/milligram.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="column">
+                
+                <label for="productID">Product ID</label>
+                <input id="ProductID" type="text" placeholder="Product ID">
+
+                <label for="productName">Product Name</label>
+                <input id="productName" type="text" placeholder="Product Name">
+
+                <label for="productCode">Product Code</label>
+                <input id="productCode" type="text" placeholder="Product Code">
+
+                <label for="unitPrice">Unit Price</label>
+                <input id="unitPrice" type="text" placeholder="Unit Price">
+
+                <label for="qty">Qty</label>
+                <input id="qty" type="text" placeholder="Qty">
+
+                <label for="totalPrice">Total Price</label>
+                <input id="totalPrice" type="text" placeholder="Total Price">
+
+                <label for="productImg"> Product img</label>
+                <input id="productImg" type="text" placeholder="product Img">
+
+                <button onclick="updateItem()">Submit</button>
+            
+                
+                
+            </div>
+        </div>
+    </div>
+    
+
+    <script src="./js/axios.min.js"></script>
+    <script>
+//user k data update korate hole age existing data  user k dekathe hove.
+// update button a click korar somoy amra product ar id ta sathe kore jabo
+// tar por sei id ta dore akta ajax call korabre user k details ta dekhabo.
+//then create a new function updateItem() in index.html page .and add the function in update button .
+// product ar id k function ar parameter a nilam. update page jabar jonno window.location=`update.html?id=${id}` likhe nibo and sathe id niye jabo.
+//update page a asar por amar kaj holo user k old datd show kora.
+//Back developer amk akta id diye dice j product details a call korle tomi poruno data peye jaba.
+//then create a function in update page fillExistingData.
+// old data user k dekhabo  id against. sei id take amra dorte pari queryString diye.
+//  window.location.search k new URLSearchParams() function ar vitore pass koriye dei.
+//queryString theke jodi amra id take ger kori tahole amra id ta peye jabo.
+//then ai id ta diye abar akta ajax call korabo.
+//amra res theke data gulu diye dorbo and data fill korbo.
+
+// akhon amra update request pathabo . kibabe pathabo ta bola ase. 
+//every data k jbave fill korecilam sebabe dore felbo.
+//Keep them into variable. akhon kaj holo ai data gulu diye ajax request pathano. data update korar jonno.
+//data update korar jonno ja patha thik se rokom akta object create kore nite hobe
+//ai object diye amra akta axios post request pathabo server a.
+//url ar sathe concat kore pathate hove product id. and second parameter hisabe pathabo object.
+//kun data gulu update korte cai.\
+// and second parameter hisabe pathabo object.
+//then ager moto res==200 check korbo. then give alert updated .
+//data updated hole to amra ai page thakbo na chole jabo index.html
+
+
+
+fillExistingData();
+async function fillExistingData(){
+    const queryString= new URLSearchParams(window.location.search);
+
+    const id = queryString.get('id');
+    let res = await axios.get('https://crud.teamrabbil.com/api/v1/ReadProductByID/'+id);
+    if (res.status==200){
+        let data = res.data['data'][0];
+           document.getElementById('productID').value=data['_id'];
+           document.getElementById('productName').value=data['productName'];
+           document.getElementById('productCode').value=data['productCode'];
+           document.getElementById('unitPrice').value=data['unitPrice'];
+           document.getElementById('qty').value=data['qty'];
+           document.getElementById('totalPrice').value=data['totalPrice'];
+           document.getElementById('productImg').value=data['Img'];
+         
+    }else{
+        alert('error');
+    }    
+}
+
+async function updateItem(){
+           let productID= document.getElementById('productID').value;
+           let productName =document.getElementById('productName').value;
+           let productCode=document.getElementById('productCode').value;
+           let unitPrice=document.getElementById('unitPrice').value;
+           let qty=document.getElementById('qty').value;
+           let totalPrice= document.getElementById('totalPrice').value;
+          let productImg= document.getElementById('productImg').value;
+       //create object..............................
+          let UpdateOBJ = {
+                          "Img":productImg,
+                          "ProductCode":productCode,
+                          "ProductName":productName,
+                          "Qty":qty,
+                          "TotalPrice":totalPrice,
+                          "UnitPrice":unitPrice}
+                
+         let res = await axios.post(`https://crud.teamrabbil.com/api/v1/UpdateProduct/${ProductID}`,UpdateOBJ);
+            if (res.status==200){
+                alert('Updated') ;            
+               window.location.href='index.html';
+                     }else{
+                    alert('error');
+                                 }
+                                
+        }
+    </script>
+</body>
+</html>\]
